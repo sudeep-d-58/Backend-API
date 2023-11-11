@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  order-service:
+    container_name: order-service
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysqldb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/orderDB?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+  mysqldb:
+    container_name: mysqldb
+    hostname: mysqldb
+    image: "mysql:8.0.35"
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: orderDB
+      MYSQL_USER: sd58
+      MYSQL_PASSWORD: sd58
+      MYSQL_ROOT_PASSWORD: root
+
+
+
