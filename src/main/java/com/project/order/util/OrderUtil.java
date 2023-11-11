@@ -13,7 +13,7 @@ public class OrderUtil {
     private static final int LONGITUDE_MIN = -180;
     private static final int LONGITUDE_MAX = 180;
     public static final String DIRECTIONS_API = "https://maps.googleapis.com/maps/api/directions/json?";
-    public static final String API_KEY = "AIzaSyB7Luq9jR2H57AI402IwLOfzsVEmMh-Lu8";
+    public static final String API_KEY = "";
 
     public static final String RESPONSE_STATUS = "/status";
     public static final String ROUTES = "/routes";
