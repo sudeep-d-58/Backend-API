@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "OrderData")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class OrderData {
@@ -20,30 +18,30 @@ public class OrderData {
     @Id
     @NotNull
     @Column(name = "id")
-    String id;
+    private String id;
 
     @Column(name = "distance")
     @NotNull
-    int distance;
+    private int distance;
 
     @Column(name = "status")
     @NotNull
-    String status;
+    private String status;
 
     @Column(name = "originLat")
     @NotNull
-    String startLatitude;
+    private String startLatitude;
 
     @Column(name = "originLong")
     @NotNull
-    String startLongitude;
+    private String startLongitude;
 
     @Column(name = "destLat")
     @NotNull
-    String destLatitude;
+    private String destLatitude;
 
     @Column(name = "destLong")
     @NotNull
-    String destLongitude;
+    private String destLongitude;
 
 }
