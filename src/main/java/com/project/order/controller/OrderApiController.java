@@ -34,7 +34,7 @@ public class OrderApiController {
     }
 
     @PatchMapping(value = "/orders/{id}", produces = {"application/json"})
-    public ResponseEntity<PatchData> takeOrder(@PathVariable String id, @RequestBody PatchData data) throws OrderNotFoundException, OrderNotTakenException, ApiResponseException {
+    public ResponseEntity<PatchData> takeOrder(@PathVariable String id, @RequestBody PatchData data) throws OrderNotFoundException, OrderNotTakenException, ApiResponseException, InvalidDataException {
         return new ResponseEntity<>(orderService.takeOrder(id, data), HttpStatus.OK);
     }
 

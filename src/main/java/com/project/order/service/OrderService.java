@@ -106,7 +106,8 @@ public class OrderService {
         return new BigInteger(distanceInM).intValue();
     }
 
-    public PatchData takeOrder(String id, PatchData patchData) throws OrderNotFoundException, OrderNotTakenException, ApiResponseException {
+    public PatchData takeOrder(String id, PatchData patchData) throws OrderNotFoundException, OrderNotTakenException, ApiResponseException, InvalidDataException {
+        validateTakeOrderStatus(patchData,id);
         Optional<OrderData> orderFromDb = orderRepository.findById(id);
         if (orderFromDb.isEmpty()) {
             log.info("order with id " + id + " was not found. Please check");
@@ -116,17 +117,29 @@ public class OrderService {
         if (!Objects.equals(order.getStatus(), Response.SUCCESS.toString())) {
             synchronized (this) {
                 if (!Objects.equals(order.getStatus(), Response.SUCCESS.toString())) {
-                    order.setStatus(Objects.equals(patchData.getVal(), "TAKEN") ? Response.SUCCESS.toString() : order.getStatus());
-                    log.info("order with id " + id + " is successfully assigned");
+                    if(Objects.equals(patchData.getVal(), Response.TAKEN.toString())){
+                        order.setStatus(Response.SUCCESS.toString());
+                        log.info("order with id " + id + " is  assigned status : " + Response.SUCCESS);
+                    }
+                    else{
+                        validateTakeOrderStatus(patchData,id);
+                    }
                     orderRepository.save(order);
                 }
             }
         } else {
-            log.info("order with id " + id + " was not taken. Please try later");
-            throw new ApiResponseException("order not taken for id " + id + " .Please try after some time.");
+            log.info("order with id " + id + " is already taken");
+            throw new ApiResponseException("order with id " + id + " is already taken");
         }
 
         return new PatchData(Response.SUCCESS.toString());
+    }
+
+    private void validateTakeOrderStatus(PatchData data,String id) throws InvalidDataException {
+        if(!(Objects.equals(data.getVal(), Response.TAKEN.toString()))){
+            log.info("order with id " + id + " was  not taken. Accepted Value for status to take order : TAKEN");
+            throw new InvalidDataException("Accepted Value for status to take order : TAKEN ");
+        }
     }
 
     public List<OrderResponse> findAllOrders(int page, int limit) {
